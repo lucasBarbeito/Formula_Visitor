@@ -1,5 +1,6 @@
 package edu.austral.ingsis.math;
 
+import edu.austral.ingsis.math.operators.*;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -8,14 +9,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ResolutionTest {
 
+    Engine engine = new Engine();
+    SumOperator sumOperator = new SumOperator();
+    SubtractOperator subtractOperator =  new SubtractOperator();
+    DivisionOperator divisionOperator = new DivisionOperator();
+    MultiplyOperator multiplyOperator = new MultiplyOperator();
+    ExponentOperator exponentOperator = new ExponentOperator();
     /**
      * Case 1 + 6
      */
     @Test
     public void shouldResolveSimpleFunction1() {
-        final Double result = 7d;
-
-        assertThat(result, equalTo(7d));
+        Expression expression = new Expression(new Operand(1),new Operand(6),sumOperator);
+        assertThat(engine.solve(expression), equalTo(7d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -23,9 +30,9 @@ public class ResolutionTest {
      */
     @Test
     public void shouldResolveSimpleFunction2() {
-        final Double result = 6d;
-
-        assertThat(result, equalTo(6d));
+        Expression expression = new Expression(new Operand(12), new Operand(2), divisionOperator);
+        assertThat(engine.solve(expression), equalTo(6d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -33,9 +40,10 @@ public class ResolutionTest {
      */
     @Test
     public void shouldResolveSimpleFunction3() {
-        final Double result = 13.5;
-
-        assertThat(result, equalTo(13.5d));
+        Expression expression1 = new Expression(new Operand(9), new Operand(2), divisionOperator);
+        Expression expression = new Expression(expression1,new Operand(3),multiplyOperator);
+        assertThat(engine.solve(expression), equalTo(13.5d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -43,9 +51,10 @@ public class ResolutionTest {
      */
     @Test
     public void shouldResolveSimpleFunction4() {
-        final Double result = 20.25;
-
-        assertThat(result, equalTo(20.25d));
+        Expression expression1 = new Expression(new Operand(27), new Operand(6), divisionOperator);
+        Expression expression = new Expression(expression1,new Operand(2),exponentOperator);
+        assertThat(engine.solve(expression), equalTo(20.25d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -53,9 +62,10 @@ public class ResolutionTest {
      */
     @Test
     public void shouldResolveSimpleFunction5() {
-        final Double result = 6d;
-
-        assertThat(result, equalTo(6d));
+        Expression expression1 = new Expression(new Operand(1), new Operand(2), divisionOperator);
+        Expression expression = new Expression(new Operand(36),expression1,exponentOperator);
+        assertThat(engine.solve(expression), equalTo(6d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -83,8 +93,9 @@ public class ResolutionTest {
      */
     @Test
     public void shouldResolveSimpleFunction8() {
-        final Double result = 0d;
-
-        assertThat(result, equalTo(0d));
+        Expression expression1 = new Expression(new Operand(5), new Operand(5), subtractOperator);
+        Expression expression = new Expression(expression1,new Operand(8),multiplyOperator);
+        assertThat(engine.solve(expression), equalTo(0d));
+        System.out.println(engine.solve(expression));
     }
 }

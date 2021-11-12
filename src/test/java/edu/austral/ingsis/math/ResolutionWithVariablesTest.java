@@ -1,5 +1,6 @@
 package edu.austral.ingsis.math;
 
+import edu.austral.ingsis.math.operators.*;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -8,14 +9,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ResolutionWithVariablesTest {
 
+    Engine engine = new Engine();
+    SumOperator sumOperator = new SumOperator();
+    SubtractOperator subtractOperator =  new SubtractOperator();
+    DivisionOperator divisionOperator = new DivisionOperator();
+    MultiplyOperator multiplyOperator = new MultiplyOperator();
+    ExponentOperator exponentOperator = new ExponentOperator();
+
     /**
      * Case 1 + x where x = 3
      */
     @Test
     public void shouldResolveFunction1() {
-        final Double result = 4d;
-
-        assertThat(result, equalTo(4d));
+        Expression expression = new Expression(new Operand(1),new Operand("x",3),sumOperator);
+        assertThat(engine.solve(expression), equalTo(4d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -23,9 +31,9 @@ public class ResolutionWithVariablesTest {
      */
     @Test
     public void shouldResolveFunction2() {
-        final Double result = 3d;
-
-        assertThat(result, equalTo(3d));
+        Expression expression = new Expression(new Operand(12),new Operand("div",4),divisionOperator);
+        assertThat(engine.solve(expression), equalTo(3d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -33,9 +41,12 @@ public class ResolutionWithVariablesTest {
      */
     @Test
     public void shouldResolveFunction3() {
-        final Double result = 12d;
-
-        assertThat(result, equalTo(12d));
+        Expression expression = new Expression(
+                new Expression(new Operand(9),new Operand("x",3),divisionOperator),
+                new Operand("y",4),
+                multiplyOperator);
+        assertThat(engine.solve(expression), equalTo(12d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -43,9 +54,11 @@ public class ResolutionWithVariablesTest {
      */
     @Test
     public void shouldResolveFunction4() {
-        final Double result = 27d;
-
-        assertThat(result, equalTo(27d));
+        Expression expression = new Expression(
+                new Expression(new Operand(27),new Operand("a",9),divisionOperator),
+                new Operand("b",3),exponentOperator);
+        assertThat(engine.solve(expression), equalTo(27d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -53,19 +66,13 @@ public class ResolutionWithVariablesTest {
      */
     @Test
     public void shouldResolveFunction5() {
-        final Double result = 6d;
-
-        assertThat(result, equalTo(6d));
-    }
-
-    /**
-     * Case |value| - 8 where value = 8
-     */
-    @Test
-    public void shouldResolveFunction6() {
-        final Double result = 0d;
-
-        assertThat(result, equalTo(0d));
+        Expression expression = new Expression(
+          new Operand("z",36),
+          new Expression(new Operand(1),new Operand(2),divisionOperator),
+          exponentOperator
+        );
+        assertThat(engine.solve(expression), equalTo(6d));
+        System.out.println(engine.solve(expression));
     }
 
     /**
@@ -77,14 +84,17 @@ public class ResolutionWithVariablesTest {
 
         assertThat(result, equalTo(0d));
     }
-
     /**
      * Case (5 - i) * 8 where i = 2
      */
     @Test
     public void shouldResolveFunction8() {
-        final Double result = 24d;
-
-        assertThat(result, equalTo(24d));
+        Expression expression = new Expression(
+                new Expression(new Operand(5),new Operand("i",2),subtractOperator),
+                new Operand(8),
+                multiplyOperator
+        );
+        assertThat(engine.solve(expression), equalTo(24d));
+        System.out.println(engine.solve(expression));
     }
 }
