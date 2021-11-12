@@ -13,7 +13,7 @@ public class Main {
     private static Operator multiplyOperator = new MultiplyOperator();
     private static Operator divisionOperator = new DivisionOperator();
     private static Operator exponentOperator = new ExponentOperator();
-//    private static Operator modulus = new ModulusOperator();
+    private static ModulusOperator modulusOperator = new ModulusOperator();
 
     public static void main(String[] args) {
         ArrayList<Expression> expressions = new ArrayList<>();
@@ -56,9 +56,8 @@ public class Main {
                     System.out.println(engine.solve(expressions.get(5)));
                     break;
                 case 6:
-//                    checkEmptyValues(expressions.get(6));
-//                    System.out.println(engine.solve(expressions.get(6)));
-                    System.out.println("Falta esta");
+                    checkEmptyValues(expressions.get(6));
+                    System.out.println(engine.solve(expressions.get(6)));
                     break;
             }
             System.out.println("Do you want to try again? Press y");
@@ -101,6 +100,7 @@ public class Main {
                 new Operand(8),
                 multiplyOperator
         );
+        Expression expression7 = new Expression(new Operand("value",modulusOperator),new Operand(8),subtractOperator);
 
         expressions.add(expression1);
         expressions.add(expression2);
@@ -108,6 +108,7 @@ public class Main {
         expressions.add(expression4);
         expressions.add(expression5);
         expressions.add(expression6);
+        expressions.add(expression7);
 
     }
 }

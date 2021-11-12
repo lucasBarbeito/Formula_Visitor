@@ -1,5 +1,6 @@
 package edu.austral.ingsis.math;
 
+import edu.austral.ingsis.math.operators.ModulusOperator;
 import edu.austral.ingsis.math.operators.OperatorVisitor;
 
 public class Engine {
@@ -12,22 +13,36 @@ public class Engine {
 
     public double solve(Evaluable evaluable){
         if (evaluable instanceof Operand){
-            return ((Operand) evaluable).getValue();
+            if (((Operand) evaluable).getAltOperator() instanceof ModulusOperator){
+                return Math.abs(((Operand) evaluable).getValue());
+            }else {
+                return ((Operand) evaluable).getValue();
+            }
         }else {
-           return  ((Expression) evaluable).getOperator().accept(operatorVisitor,
-                    solve(((Expression) evaluable).getLeftEvaluable()),
-                    solve(((Expression) evaluable).getRightEvaluable()));
+            if (((Expression) evaluable).getOperator() instanceof ModulusOperator){
+                return ((Expression) evaluable).getAltOperator().accept(operatorVisitor,
+                        solve(((Expression) evaluable).getLeftEvaluable()),
+                        solve(((Expression) evaluable).getRightEvaluable()));
+            }else{
+                return  ((Expression) evaluable).getOperator().accept(operatorVisitor,
+                        solve(((Expression) evaluable).getLeftEvaluable()),
+                        solve(((Expression) evaluable).getRightEvaluable()));
+            }
         }
     }
 
     public String printer(Evaluable evaluable, String string){
         String returnString = "";
         if (evaluable instanceof Expression){
-            returnString = "(" + returnString + printer(((Expression) evaluable).getLeftEvaluable(),returnString);
+            returnString = (((Expression) evaluable).getAltOperator() instanceof ModulusOperator ? "|" : "(" ) + returnString + printer(((Expression) evaluable).getLeftEvaluable(),returnString);
             returnString = returnString + " " + ((Expression) evaluable).getOperator().getName() + " ";
-            returnString = returnString + printer(((Expression) evaluable).getRightEvaluable(),returnString) +")";
+            returnString = returnString + printer(((Expression) evaluable).getRightEvaluable(),returnString) + (((Expression) evaluable).getAltOperator() instanceof ModulusOperator ? "|" : ")" );
         }else{
-            return ((Operand) evaluable).getName();
+            if (((Operand) evaluable).getAltOperator() instanceof ModulusOperator){
+                return "|" + ((Operand) evaluable).getName() + "|";
+            }else {
+                return ((Operand) evaluable).getName();
+            }
         }
         return returnString;
     }

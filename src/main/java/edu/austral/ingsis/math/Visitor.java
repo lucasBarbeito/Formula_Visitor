@@ -9,6 +9,7 @@ public interface Visitor {
     public double visit(DivisionOperator div , double left, double right);
     public double visit(MultiplyOperator mult , double left, double right);
     public double visit(ExponentOperator power , double left, double right);
+    public double visit(ModulusOperator modulus , double value);
 
 
 

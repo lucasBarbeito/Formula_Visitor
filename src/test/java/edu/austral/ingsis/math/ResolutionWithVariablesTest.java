@@ -15,7 +15,7 @@ public class ResolutionWithVariablesTest {
     DivisionOperator divisionOperator = new DivisionOperator();
     MultiplyOperator multiplyOperator = new MultiplyOperator();
     ExponentOperator exponentOperator = new ExponentOperator();
-
+    ModulusOperator modulusOperator = new ModulusOperator();
     /**
      * Case 1 + x where x = 3
      */
@@ -80,9 +80,11 @@ public class ResolutionWithVariablesTest {
      */
     @Test
     public void shouldResolveFunction7() {
-        final Double result = 0d;
 
-        assertThat(result, equalTo(0d));
+        Expression expression = new Expression(new Operand("value",-8,modulusOperator),new Operand(8),subtractOperator);
+        assertThat(engine.solve(expression), equalTo(0d));
+        System.out.println(engine.solve(expression));
+
     }
     /**
      * Case (5 - i) * 8 where i = 2
@@ -96,5 +98,15 @@ public class ResolutionWithVariablesTest {
         );
         assertThat(engine.solve(expression), equalTo(24d));
         System.out.println(engine.solve(expression));
+    }
+    /**
+     * Case |value - 8| where value = 8
+     */
+    @Test
+    public void shouldResolveFunction9() {
+        Expression expression = new Expression(new Operand("value",-8),new Operand(8),subtractOperator, modulusOperator);
+        System.out.println(engine.solve(expression));
+        assertThat(engine.solve(expression), equalTo(-16d));
+
     }
 }

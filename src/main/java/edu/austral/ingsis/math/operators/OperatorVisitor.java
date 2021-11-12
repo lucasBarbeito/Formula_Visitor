@@ -20,4 +20,7 @@ public class OperatorVisitor implements Visitor {
     public double visit(ExponentOperator power, double left, double right) {
         return Math.pow(left,right);
     }
+    public double visit(ModulusOperator modulus, double value) {
+        return Math.abs(value);
+    }
 }

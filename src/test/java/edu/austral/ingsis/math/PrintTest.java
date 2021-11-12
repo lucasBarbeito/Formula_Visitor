@@ -13,6 +13,7 @@ public class PrintTest {
     DivisionOperator divisionOperator = new DivisionOperator();
     MultiplyOperator multiplyOperator = new MultiplyOperator();
     ExponentOperator exponentOperator = new ExponentOperator();
+    ModulusOperator modulusOperator = new ModulusOperator();
     /**
      * Case 1 + 6
      */
@@ -64,10 +65,10 @@ public class PrintTest {
      */
     @Test
     public void shouldPrintFunction7() {
-        final String expected = "|value| - 8";
-        final String result = expected;
-
-        assertThat(result, equalTo(expected));
+        final String expected = "(|value| - 8)";
+        Expression expression = new Expression(new Operand("value",8,modulusOperator),new Operand(8),subtractOperator);
+        System.out.println(engine.printer(expression,""));
+        assertThat(engine.printer(expression,""), equalTo(expected));
     }
 
     /**
@@ -80,5 +81,16 @@ public class PrintTest {
         Expression expression = new Expression(expression1,new Operand(8),multiplyOperator);
         System.out.println(engine.printer(expression,""));
         assertThat(engine.printer(expression,""), equalTo(expected));
+    }
+    /**
+     * Case |value - 8| where value = 8
+     */
+    @Test
+    public void shouldPrintFunction9() {
+        final String expected = "|value - 8|";
+        Expression expression = new Expression(new Operand("value",-8),new Operand(8),subtractOperator, modulusOperator);
+        System.out.println(engine.printer(expression,""));
+        assertThat(engine.printer(expression,""), equalTo(expected));
+
     }
 }
