@@ -14,11 +14,11 @@ public class Main {
     private static Operator divisionOperator = new DivisionOperator();
     private static Operator exponentOperator = new ExponentOperator();
     private static ModulusOperator modulusOperator = new ModulusOperator();
+    private static Engine engine = new Engine();
 
     public static void main(String[] args) {
         ArrayList<Expression> expressions = new ArrayList<>();
         String repeat;
-        Engine engine = new Engine();
 
         do {
             createExpressions(expressions);
@@ -32,45 +32,50 @@ public class Main {
             System.out.println("7) |value| - 8");
             switch (scanner.nextInt() -1){
                 case 0:
-                    checkEmptyValues(expressions.get(0));
-                    System.out.println(engine.solve(expressions.get(0)));
+                    particularCase(0,expressions);
                     break;
                 case 1:
-                    checkEmptyValues(expressions.get(1));
-                    System.out.println(engine.solve(expressions.get(1)));
+                    particularCase(1,expressions);
                     break;
                 case 2:
-                    checkEmptyValues(expressions.get(2));
-                    System.out.println(engine.solve(expressions.get(2)));
+                    particularCase(2,expressions);
                     break;
                 case 3:
-                    checkEmptyValues(expressions.get(3));
-                    System.out.println(engine.solve(expressions.get(3)));
+                    particularCase(3,expressions);
                     break;
                 case 4:
-                    checkEmptyValues(expressions.get(4));
-                    System.out.println(engine.solve(expressions.get(4)));
+                    particularCase(4,expressions);
                     break;
                 case 5:
-                    checkEmptyValues(expressions.get(5));
-                    System.out.println(engine.solve(expressions.get(5)));
+                    particularCase(5,expressions);
                     break;
                 case 6:
-                    checkEmptyValues(expressions.get(6));
-                    System.out.println(engine.solve(expressions.get(6)));
+                    particularCase(6,expressions);
                     break;
             }
             System.out.println("Do you want to try again? Press y");
             expressions.clear();
             repeat = scanner.next();
         }while (Objects.equals(repeat, "y"));
+        System.out.println("Goodbye!");
+    }
+
+    private static void particularCase(int n, ArrayList<Expression> expressions){
+        while (engine.getVariableAmount(expressions.get(n),0) > 0){
+            checkEmptyValues(expressions.get(n));
+            System.out.println(engine.printer(expressions.get(n),""));
+        }
+            System.out.println(engine.solve(expressions.get(n)));
     }
 
     private static void checkEmptyValues(Evaluable evaluable){
         if (evaluable instanceof Operand){
             if (Double.isNaN(((Operand) evaluable).getValue())){
-                System.out.println("Must define a value for variable "+ ((Operand) evaluable).getName());
-                ((Operand) evaluable).setValue(scanner.nextDouble());
+                System.out.println("Do you want to define a value for variable " + ((Operand) evaluable).getName() +" ? Press y");
+                if (scanner.next().equals("y")){
+                    System.out.println("Define a value for variable "+ ((Operand) evaluable).getName());
+                    ((Operand) evaluable).setValue(scanner.nextDouble());
+                }
             }
             }else {
             checkEmptyValues(((Expression) evaluable).getLeftEvaluable());

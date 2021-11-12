@@ -46,4 +46,15 @@ public class Engine {
         }
         return returnString;
     }
+
+    public double getVariableAmount(Evaluable evaluable, double amount){
+        double returnAmount = 0;
+        if (evaluable instanceof Operand){
+            if (Double.isNaN(((Operand) evaluable).getValue())) returnAmount+=1;
+        }else {
+            returnAmount += getVariableAmount(((Expression) evaluable).getLeftEvaluable(),returnAmount);
+            returnAmount += getVariableAmount(((Expression) evaluable).getRightEvaluable(),returnAmount);
+        }
+        return returnAmount;
+    }
 }

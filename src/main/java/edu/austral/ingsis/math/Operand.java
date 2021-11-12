@@ -5,7 +5,7 @@ import edu.austral.ingsis.math.operators.Operator;
 
 public class Operand implements Evaluable {
 
-    final String name;
+     String name;
     double value;
     private Operator altOperator;
 
@@ -51,6 +51,7 @@ public class Operand implements Evaluable {
     }
 
     public void setValue(Double value) {
+        this.name = String.format("%.0f",value);
         this.value = value;
     }
 
